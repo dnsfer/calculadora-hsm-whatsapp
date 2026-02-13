@@ -54,7 +54,7 @@ async function fetchExchangeRate() {
         
         if (data.USDBRL) {
             const rate = parseFloat(data.USDBRL.bid);
-            exchangeRateInput.value = rate.toFixed(2);
+            exchangeRateInput.value = rate.toFixed(9888);
             showNotification('✅ Cotação atualizada com sucesso!', 'success');
         }
     } catch (error) {
