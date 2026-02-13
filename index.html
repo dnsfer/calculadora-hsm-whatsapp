@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/style/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="shortcut icon" href="assets/image/Pricing-HSM-Branco-favicon.png" type="Logo-HSM" />
+    <title>Progradior Dev | Pricing HSM</title>
+  </head>
+  <body>
+    <div class="container">
+      <!--  HEADER  -->
+      <header class="header">
+        <div class="logo">
+          <img
+            src="assets/image/Pricing-HSM-Branco.png"
+            alt="Logo Pricing HSM"
+          />
+          <h1>Preço por HSM </h1>
+        </div>
+        <p class="subtitle">Calcule o custo dos seus disparos em massa.</p>
+      </header>
+
+      <!--  MAIN - CALCULADORA  -->
+      <main class="calculator-container">
+        
+        <!--  CARD DE CONFIGURAÇÃO  -->
+        <div class="config-card">
+          <h2><i class="fas fa-cog"></i> Configurações</h2>
+          
+          <!-- Quantidade de Contatos -->
+          <div class="input-group">
+            <label for="contacts">
+              <i class="fas fa-users"></i>
+              Quantidade de Contatos:
+            </label>
+            <input
+              type="number"
+              id="contacts"
+              placeholder="Ex: 1000"
+              min="1"
+              value="0"
+            />
+          </div>
+
+          <!-- Preço por Mensagem -->
+          <div class="input-group">
+            <label for="pricePerMessage">
+              <i class="fas fa-dollar-sign"></i>
+              Preço por Mensagem (USD):
+            </label>
+            <input
+              type="number"
+              id="pricePerMessage"
+              placeholder="Ex: 0.0626"
+              min="0.001"
+              step="0.001"
+              value="0.0626"
+            />
+            <small>
+              Preço padrão do WhatsApp Business API: $0.0626 por mensagem de
+              Marketing e para mensagem de Utility é $0.00353 por mensagem.
+            </small>
+          </div>
+
+          <!-- Cotação do Dólar -->
+          <div class="input-group">
+            <label for="exchangeRate">
+              <i class="fas fa-exchange-alt"></i>
+              Cotação do Dólar (BRL)
+            </label>
+            <input
+              type="number"
+              id="exchangeRate"
+              placeholder="Ex: 5.23"
+              step="0.01"
+              min="0"
+              value="5.23"
+            />
+            <button id="updateRate" class="btn-update">
+              <i class="fas fa-sync-alt"></i>
+              Atualizar Cotação
+            </button>
+          </div>
+
+          <!-- Taxa de Falha -->
+          <div class="input-group">
+            <label for="taxaFalha">
+              <i class="fas fa-exclamation-triangle"></i>
+              Taxa de Falha (%)
+            </label>
+            <input
+              type="number"
+              id="taxaFalha"
+              placeholder="Ex: 0"
+              min="0"
+              max="100"
+              value="15"
+            />
+            <small>Contatos que NÃO receberão por restrições da Meta</small>
+          </div>
+
+          <!-- Desconto -->
+          <div class="input-group">
+            <label for="discount">
+              <i class="fas fa-percentage"></i>
+              Desconto (%)
+            </label>
+            <input
+              type="number"
+              id="discount"
+              placeholder="Ex: 10"
+              min="0"
+              max="100"
+              value="0"
+            />
+          </div>
+
+          <!-- Botão Calcular -->
+          <button id="calculate" class="btn-calculate">
+            <i class="fas fa-calculator"></i>
+            Calcular Custo
+          </button>
+        </div>
+
+        <!--  CARD DE RESULTADOS  -->
+        <div class="results-card">
+          <h2><i class="fas fa-chart-line"></i> Resultados</h2>
+
+          <!-- Total de Contatos -->
+          <div class="result-item">
+            <span class="label">Total de Contatos:</span>
+            <span class="value" id="totalMessages">0</span>
+          </div>
+
+          <!-- Mensagens Entregues -->
+          <div class="result-item highlight">
+            <span class="label">✅ Mensagens Entregues:</span>
+            <span class="value" id="messagesDelivered">0</span>
+          </div>
+
+          <!-- Mensagens Falhadas -->
+          <div class="result-item">
+            <span class="label">❌ Falhas/Bloqueios:</span>
+            <span class="value" id="messagesFailed">0</span>
+          </div>
+
+          <!-- Custo USD -->
+          <div class="result-item highlight">
+            <span class="label">Custo em Dólar (USD):</span>
+            <span class="value" id="costUSD">$0.00</span>
+          </div>
+
+          <!-- Custo BRL -->
+          <div class="result-item highlight">
+            <span class="label">Custo em Reais (BRL):</span>
+            <span class="value" id="costBRL">R$ 0,00</span>
+          </div>
+
+          <!-- Economia com Falhas -->
+          <div class="result-item">
+            <span class="label">💰 Economia (falhas):</span>
+            <span class="value" id="economyBRL">R$ 0,00</span>
+          </div>
+
+          <!-- Seção de Desconto (só aparece se houver) -->
+          <div class="result-item" id="discountSection" style="display: none">
+            <span class="label">Desconto Aplicado:</span>
+            <span class="value discount" id="discountValue">R$ 0,00</span>
+          </div>
+
+          <!-- Valor Final (só aparece se houver desconto) -->
+          <div class="result-item final" id="finalSection" style="display: none">
+            <span class="label">💵 Valor Final:</span>
+            <span class="value" id="finalCost">R$ 0,00</span>
+          </div>
+
+          <!-- Detalhamento -->
+          <div class="cost-breakdown">
+            <h3><i class="fas fa-info-circle"></i> Detalhamento</h3>
+            <ul id="breakdown">
+              <li>Aguardando cálculo...</li>
+            </ul>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- SEÇÃO DE INFORMAÇÕES -->
+      <section class="info-section">
+        <h2><i class="fas fa-lightbulb"></i> Informações Importantes</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <i class="fas fa-check-circle"></i>
+            <h3>HSM Templates</h3>
+            <p>
+              Mensagens HSM (Highly Structured Messages) são templates
+              pré-aprovados pelo WhatsApp para comunicação em massa.
+            </p>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-dollar-sign"></i>
+            <h3>Precificação</h3>
+            <p>
+              O custo varia por país e categoria de mensagem. Mensagens de
+              marketing custam mais que mensagens de utilidade.
+            </p>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Conformidade</h3>
+            <p>
+              É obrigatório ter opt-in dos usuários e seguir as políticas do
+              WhatsApp Business para evitar bloqueios.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!--  FOOTER  -->
+      <footer class="footer">
+        <p>
+          &copy; 2026 <span class="footerDetach">Progradior.Dev</span> | Danilo Nunes
+        </p>
+      </footer>
+    </div>
+
+    <script src="assets/js/index.js"></script>
+  </body>
+</html>
